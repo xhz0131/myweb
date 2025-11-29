@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>治愈系弹窗 </title>
+    <script>
+        // 500条治愈话语（含阳光鲜花类表情，每条最多重复2次）
+        const messages = [
+            "今天的阳光好暖，像给心情裹了层毛☀️",
+            "抬头看看向日葵，它正朝着光的方向生长🌻",
+            "你笑起来的时候，比春日繁花还耀眼💐",
+            "阳光透过树叶的缝隙，在地上画满了小惊喜☀️",
+            "把烦恼晒在阳光下，会像露珠一样慢慢蒸发✨",
+            "每朵花都会有花期，你的绽放也值得等待🌸",
+            "风里带着花香，那是春天在对你笑呀🌼",
+            "清晨的第一杯温水，藏着生活的温柔☕",
+            "星星睡不着的时候，也会数人类的晚安吧🌙",
+            "落叶飘下的速度，是秋天写给大地的诗🍂",
+            "你走的每一步，都在靠近更好的自己🚶",
+            "雨天的被窝，是宇宙给的小小拥抱🌧️",
+            "云朵在天上散步，今天也请慢慢走☁️",
+            "煮一碗热汤面，把疲惫都融化在热气里🍜",
+            "月亮不圆也很美，你也是🌕",
+            "耳机里的音乐，是随身携带的小宇宙🎧",
+            "猫咪打盹的样子，藏着治愈的秘密🐱",
+            "种的小植物发了芽，像希望在长大🌱",
+            "今天的风很软，适合说句我喜欢你💨",
+            "把不开心折成纸飞机，让它飞向远方✈️",
+            "街角的路灯，在等晚归的人回家💡",
+            "一块甜甜的蛋糕，能治愈大半的烦恼🍰",
+            "雨停了，说不定会有彩虹在等你🌈",
+            "你比自己想象中，更勇敢一点点💪",
+            "夜晚的星星，是给熬夜人的小奖励🌟",
+            "春天的第一朵花，是大自然的情书💌",
+            "慢慢走，沿途有很多小美好在等你🌸",
+            "喝杯热茶吧，让温暖从胃传到心里🍵",
+            "今天的你，也在好好生活呀👍",
+            "风会带走烦恼，留下温柔给你🌬️",
+            "睡前原谅一切，醒来又是新的一天🌅",
+            "你的存在，本身就是一件美好的事✨",
+            "阳光会落在你身上，你也会快乐一场☀️",
+            "累了就停下来，抱抱自己再出发🫂",
+            "每颗流星划过，都在为你许愿🌠",
+            "冬天的阳光，比任何时候都更珍贵☀️",
+            "书里藏着另一个世界，翻开就会遇见📖",
+            "窗台的花开花落，都是时间的礼物🌼",
+            "你认真做事的样子，真的很迷人💫",
+            "偶尔的不开心，是为了迎接更大的快乐😌",
+            "踩踩落叶听听声，烦恼会少一点点🍂",
+            "月亮会记得，你今天的努力🌙",
+            "给自己放个假，不用一直追赶⏸️",
+            "路边的小野花，也在努力绽放呀💐",
+            "深呼吸，把烦恼呼出去🌬️",
+            "今天的晚霞，是天空的小惊喜🌆",
+            "你值得被温柔对待，包括自己❤️",
+            "雨过天晴，一切都会变好的☀️",
+            "慢慢来，谁不是摸着石头过河呢🌊",
+            "星星再小，也在发光呀🌟",
+            "吃颗糖吧，生活有点甜🍬",
+            "今天的你，也辛苦了💦",
+            "风里有春天的味道，你闻到了吗🌸",
+            "抬头看看天，烦恼会变轻☁️",
+            "你的微笑，比阳光更耀眼😊",
+            "泡个热水澡，洗去一天的疲惫🛁",
+            "明天又是新的一天，有新的希望🌞",
+            "路边的小狗摇尾巴，是在跟你打招呼呀🐶",
+            "你不需要很完美，做自己就好💖",
+            "阳光透过窗户，在桌上画了个小太阳☀️",
+            "听首轻音乐，让心情慢慢沉淀🎶",
+            "今天做了一件小事，也很棒呀👏",
+            "雪落在手心，是冬天的吻❄️",
+            "把烦恼写在纸上，然后撕掉它📜",
+            "你走的路，每一步都算数🚶‍♀️",
+            "春天不远了，一切都会复苏🌱",
+            "喝口水，慢慢说，不急💧",
+            "夜晚的路灯，是温柔的守望者💡",
+            "你比昨天，又进步了一点点📈",
+            "看到好看的云，就停下来看看吧☁️",
+            "给自己买束花，生活需要仪式感💐",
+            "累了就睡一觉，世界不会塌下来😴",
+            "风会吹走乌云，带来晴朗🌬️",
+            "你的眼睛里，有星星在闪烁🌟",
+            "今天的咖啡，比平时甜一点点☕",
+            "和朋友聊聊天，烦恼会减半👥",
+            "落叶不是结束，是另一种开始🍂",
+            "你值得所有美好的东西💎",
+            "雨天听雨声，也是一种享受🌧️",
+            "小小的进步，也值得庆祝🎉",
+            "月亮会陪伴你，度过漫长夜晚🌙",
+            "你笑起来，世界都亮了😊",
+            "吃顿好的，犒劳一下自己🍽️",
+            "今天的风，很温柔💨",
+            "抬头有星光，低头有花香✨",
+            "你不需要追赶别人，有自己的节奏就好⏱️",
+            "种一棵树，等它长大，也等自己长大🌳",
+            "今天的晚霞，是橘色的温柔🌇",
+            "读一首诗，让心灵休息一下📖",
+            "你已经很努力了，别责怪自己💪",
+            "阳光照在身上，暖洋洋的☀️",
+            "和猫咪贴贴，治愈一切不开心🐱",
+            "走出去，看看世界的美好🌍",
+            "今天的云，像棉花糖一样软☁️",
+            "给自己一点时间，一切都会好的⏳",
+            "你的声音，很好听🎤",
+            "春天的风，会带来好消息🌸",
+            "喝杯热牛奶，睡个好觉🥛",
+            "你做的饭，有家的味道🍳",
+            "路边的小草，也在努力生长🌿",
+            "今天的你，也很可爱呀😊",
+            "星星在眨眼，是在跟你说晚安🌟",
+            "深呼吸，感受当下的平静🌬️",
+            "你比自己想的，更有力量💥",
+            "雨天的彩虹，更珍贵🌈",
+            "今天的阳光，很慷慨☀️",
+            "读一本书，遇见另一个自己📚",
+            "你值得被爱，也值得去爱❤️",
+            "风里有花香，那是春天的信💌",
+            "累了就休息，不是偷懒😴",
+            "今天的月亮，很圆🌕",
+            "你的努力，会被看见💫",
+            "吃颗草莓，生活有点甜🍓",
+            "走在落叶上，沙沙响真好听🍂",
+            "你不需要讨好谁，做自己就好💖",
+            "阳光透过树叶，洒下斑驳的光☀️",
+            "听首老歌，回忆也是甜的🎶",
+            "今天做了一件好事，真棒👍",
+            "雪后的世界，很干净❄️",
+            "把烦恼交给风，它会带走的🌬️",
+            "你的笑容，是最好的治愈剂😊",
+            "喝杯茶，慢慢聊🍵",
+            "明天会更好，真的🌞",
+            "路边的小花，也在为你加油💐",
+            "你走的每一步，都有意义🚶",
+            "春天的雨，很温柔🌧️",
+            "给自己一个拥抱，你很棒🫂",
+            "星星很多，总有一颗为你亮🌟",
+            "今天的蛋糕，很甜🍰",
+            "你比昨天，更爱自己了一点点💖",
+            "踩踩水洼，找回小时候的快乐💦",
+            "月亮知道，你的心事🌙",
+            "不用急，慢慢来，你可以的⏳",
+            "风很轻，云很淡，一切刚好🌬️",
+            "你的眼睛，很漂亮👀",
+            "今天的阳光，很暖☀️",
+            "读一句诗，让心情变好📜",
+            "你已经做得很好了，别苛求自己💪",
+            "雨天的被窝，很舒服🌧️",
+            "和朋友散步，很开心👫",
+            "落叶归根，是温柔的告别🍂",
+            "你值得拥有最好的一切💎",
+            "听雨声，很治愈🌧️",
+            "小小的成功，也值得开心🎉",
+            "夜晚的星星，很亮🌟",
+            "你笑起来，真好看😊",
+            "吃顿好的，心情会变好🍲",
+            "今天的风，很舒服💨",
+            "抬头看天，心情会开阔☁️",
+            "你有自己的节奏，不用急⏱️",
+            "种下希望，会收获惊喜🌱",
+            "今天的晚霞，很美🌆",
+            "读本书，让心灵旅行📚",
+            "别责怪自己，你已经很努力了💖",
+            "阳光照进来，很温暖☀️",
+            "猫咪的呼噜声，很治愈🐱",
+            "出去走走，会有新发现🚶",
+            "今天的云，很好看☁️",
+            "给自己时间，会慢慢好起来的⏳",
+            "你的声音，很温柔🎤",
+            "春风拂面，很舒服🌸",
+            "喝杯热牛奶，晚安🥛",
+            "你做的菜，很好吃🍲",
+            "小草在生长，很有力量🌿",
+            "今天的你，很特别😊",
+            "星星说，晚安🌟",
+            "深呼吸，平静下来🌬️",
+            "你很有力量，别小看自己💪",
+            "雨后彩虹，很美丽🌈",
+            "今天的阳光，真好☀️",
+            "读书，是快乐的事📚",
+            "你值得被好好对待❤️",
+            "风里有花香，真好💐",
+            "休息不是偷懒，是充电🔋",
+            "今天的月亮，很美🌙",
+            "你的努力，会有回报💫",
+            "草莓很甜，生活也是🍓",
+            "踩落叶的声音，很好听🍂",
+            "做自己，最舒服💖",
+            "阳光斑驳，很美好☀️",
+            "老歌很好听，回忆很甜🎶",
+            "做好事，很开心👍",
+            "雪后很干净，很舒服❄️",
+            "风会带走烦恼🌬️",
+            "你的笑容，很治愈😊",
+            "喝茶聊天，很惬意🍵",
+            "明天会更好🌞",
+            "小花在加油💐",
+            "每一步都有意义🚶‍♀️",
+            "春雨很温柔🌧️",
+            "拥抱自己，你很棒🫂",
+            "星星为你亮🌟",
+            "蛋糕很甜🍰",
+            "更爱自己一点💖",
+            "踩水洼很快乐💦",
+            "月亮知道你的心事🌙",
+            "慢慢来，不急⏳",
+            "风轻云淡，刚好🌬️",
+            "你的眼睛很漂亮👀",
+            "阳光很暖☀️",
+            "诗句很美好📜",
+            "别苛求自己💪",
+            "被窝很舒服🌧️",
+            "散步很开心👫",
+            "落叶是温柔的告别🍂",
+            "你值得最好的💎",
+            "雨声很治愈🌧️",
+            "小成功也开心🎉",
+            "星星很亮🌟",
+            "你笑起来真好看😊",
+            "吃好的心情好🍲",
+            "风很舒服💨",
+            "看天心情开阔☁️",
+            "有自己的节奏⏱️",
+            "种下希望🌱",
+            "晚霞很美🌆",
+            "读书是旅行📚",
+            "别责怪自己💖",
+            "阳光很温暖☀️",
+            "猫咪呼噜声治愈🐱",
+            "出去走走有发现🚶",
+            "云很好看☁️",
+            "会慢慢好起来⏳",
+            "声音很温柔🎤",
+            "春风很舒服🌸",
+            "热牛奶晚安🥛",
+            "菜很好吃🍲",
+            "小草有力量🌿",
+            "今天的你很特别😊",
+            "星星说晚安🌟",
+            "深呼吸平静🌬️",
+            "你很有力量💪",
+            "彩虹很美丽🌈",
+            "阳光真好☀️",
+            "读书很快乐📚",
+            "值得被好好对待❤️",
+            "风里有花香💐",
+            "休息是充电🔋",
+            "月亮很美🌙",
+            "努力有回报💫",
+            "草莓甜生活甜🍓",
+            "踩落叶好听🍂",
+            "做自己舒服💖",
+            "阳光斑驳美好☀️",
+            "老歌回忆甜🎶",
+            "做好事开心👍",
+            "雪后舒服❄️",
+            "风带走烦恼🌬️",
+            "笑容治愈😊",
+            "喝茶惬意🍵",
+            "明天更好🌞",
+            "小花加油💐",
+            "每步有意义🚶",
+            "春雨温柔🌧️",
+            "拥抱自己很棒🫂",
+            "星星为你亮🌟",
+            "蛋糕甜🍰",
+            "更爱自己💖",
+            "踩水洼快乐💦",
+            "月亮知心事🌙",
+            "慢慢来不急⏳",
+            "风轻云淡刚好🌬️",
+            "眼睛漂亮👀",
+            "阳光暖☀️",
+            "诗句美好📜",
+            "不苛求自己💪",
+            "被窝舒服🌧️",
+            "散步开心👫",
+            "落叶温柔告别🍂",
+            "值得最好的💎",
+            "雨声治愈🌧️",
+            "小成功开心🎉",
+            "星星亮🌟",
+            "笑起来好看😊",
+            "吃好心情好🍲",
+            "风舒服💨",
+            "看天开阔☁️",
+            "有自己节奏⏱️",
+            "种下希望🌱",
+            "晚霞美🌆",
+            "读书是旅行📚",
+            "别责怪自己💖",
+            "阳光温暖☀️",
+            "猫咪治愈🐱",
+            "出去有发现🚶",
+            "云好看☁️",
+            "会好起来⏳",
+            "声音温柔🎤",
+            "春风舒服🌸",
+            "牛奶晚安🥛",
+            "菜好吃🍲",
+            "小草有力🌿",
+            "你很特别😊",
+            "星星晚安🌟",
+            "呼吸平静🌬️",
+            "你有力量💪",
+            "彩虹美丽🌈",
+            "阳光好☀️",
+            "读书快乐📚",
+            "值得被爱❤️",
+            "风有花香💐",
+            "休息充电🔋",
+            "月亮美🌙",
+            "努力回报💫",
+            "草莓甜🍓",
+            "落叶好听🍂",
+            "做自己💖",
+            "阳光美好☀️",
+            "老歌甜🎶",
+            "好事开心👍",
+            "雪后舒服❄️",
+            "风带烦恼🌬️",
+            "笑容治愈😊",
+            "喝茶惬意🍵",
+            "明天好🌞",
+            "小花加油💐",
+            "每步意义🚶",
+            "春雨温柔🌧️",
+            "拥抱很棒🫂",
+            "星星亮🌟",
+            "蛋糕甜🍰",
+            "爱自己💖",
+            "踩水快乐💦",
+            "月亮知心事🌙",
+            "慢慢来⏳",
+            "风轻云淡🌬️",
+            "眼睛漂亮👀",
+            "阳光暖☀️",
+            "诗句美📜",
+            "不苛求💪",
+            "被窝舒服🌧️",
+            "散步开心👫",
+            "落叶告别🍂",
+            "值得最好💎",
+            "雨声治愈🌧️",
+            "成功开心🎉",
+            "星星亮🌟",
+            "笑好看😊",
+            "吃好开心🍲",
+            "风舒服💨",
+            "看天开阔☁️",
+            "有节奏⏱️",
+            "种希望🌱",
+            "晚霞美🌆",
+            "读书旅行📚",
+            "不责怪💖",
+            "阳光暖☀️",
+            "猫咪治愈🐱",
+            "出去发现🚶",
+            "云好看☁️",
+            "会好⏳",
+            "声音柔🎤",
+            "春风舒🌸",
+            "牛奶安🥛",
+            "菜好吃🍲",
+            "小草力🌿",
+            "你特别😊",
+            "星星安🌟",
+            "呼吸静🌬️",
+            "你有力💪",
+            "彩虹美🌈",
+            "阳光好☀️",
+            "读书乐📚",
+            "值得爱❤️",
+            "风有香💐",
+            "休息充🔋",
+            "月亮美🌙",
+            "努力报💫",
+            "草莓甜🍓",
+            "落叶听🍂",
+            "做自己💖",
+            "阳光好☀️",
+            "老歌甜🎶",
+            "好事乐👍",
+            "雪后舒❄️",
+            "风带忧🌬️",
+            "笑治愈😊",
+            "茶惬意🍵",
+            "明天好🌞",
+            "花加油💐",
+            "步有义🚶",
+            "雨温柔🌧️",
+            "拥抱棒🫂",
+            "星为你🌟",
+            "糕甜🍰",
+            "爱自己💖",
+            "踩水乐💦",
+            "月知事🌙",
+            "慢慢行⏳",
+            "风轻云🌬️",
+            "眼漂亮👀",
+            "阳光暖☀️",
+            "诗美好📜",
+            "不苛求💪",
+            "窝舒服🌧️",
+            "散开心👫",
+            "叶告别🍂",
+            "值最好💎",
+            "雨治愈🌧️",
+            "成开心🎉",
+            "星亮🌟",
+            "笑好看😊",
+            "吃开心🍲",
+            "风舒服💨",
+            "天开阔☁️",
+            "有节奏⏱️",
+            "种希望🌱",
+            "霞美🌆",
+            "书旅行📚",
+            "不责怪💖",
+            "光温暖☀️",
+            "猫治愈🐱",
+            "出发现🚶",
+            "云好看☁️",
+            "会好的⏳",
+            "声温柔🎤",
+            "风舒服🌸",
+            "奶晚安🥛",
+            "菜好吃🍲",
+            "草有力🌿",
+            "你特别😊",
+            "星晚安🌟",
+            "呼吸静🌬️",
+            "你有力💪",
+            "虹美丽🌈",
+            "阳光好☀️",
+            "书快乐📚",
+            "值得爱❤️",
+            "风有香💐",
+            "休充电🔋",
+            "月很美🌙",
+            "力有报💫",
+            "莓很甜🍓",
+            "叶好听🍂",
+            "做自己💖"
+        ];
+ 
+        // 马卡龙色系弹窗（保持不变）
+        const colors = [
+            "#FFEEEE", "#EEFFEE", "#EEEEFF", "#FFF8E1", "#E8F5E9",
+            "#FFECB3", "#C8E6C9", "#BBDEFB", "#C5CAE9", "#D1C4E9",
+            "#F8BBD0", "#FFCDD2", "#B2EBF2", "#FFE0B2", "#E0F7FA",
+            "#F3E5F5", "#FBE9E7", "#E6F7FF", "#FFF3E0", "#F0F4C3"
+        ];
+ 
+        // 动画配置（保持不变）
+        const animationConfig = {
+            duration: 1200,
+            timingFunction: 'linear',
+            exitDuration: 1000
+        };
+ 
+        // 弹窗函数（增大尺寸）
+        function showMessage(timingOffset = 0) {
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+             
+            const popup = document.createElement("div");
+            popup.style.position = "fixed";
+            popup.style.padding = "28px 36px";
+            popup.style.borderRadius = "12px";
+            popup.style.boxShadow = "0 3px 15px rgba(0,0,0,0.12)";
+            popup.style.backgroundColor = randomColor;
+            popup.style.color = "#333";
+            popup.style.fontSize = "22px";
+            popup.style.fontFamily = "Microsoft YaHei, 微软雅黑, PingFang SC, sans-serif";
+            popup.style.zIndex = "1000";
+            popup.style.maxWidth = "380px";
+            popup.style.textAlign = "center";
+            popup.style.wordBreak = "break-word";
+            popup.innerText = randomMsg;
+             
+            popup.style.opacity = "0";
+            popup.style.transform = "scale(0.8)";
+            popup.style.transition = `all ${animationConfig.duration}ms ${animationConfig.timingFunction} ${timingOffset}ms`;
+             
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+             
+            let left;
+            const random = Math.random();
+            if (random < 0.35) {
+                left = windowWidth * 0.2 + Math.random() * windowWidth * 0.2;
+            } else if (random < 0.7) {
+                left = windowWidth * 0.6 + Math.random() * windowWidth * 0.2;
+            } else {
+                left = windowWidth * 0.4 + Math.random() * windowWidth * 0.2;
+            }
+             
+            const top = windowHeight * 0.1 + Math.random() * windowHeight * 0.8;
+            popup.style.left = `${left - 190}px`;
+            popup.style.top = `${top - 65}px`;
+             
+            document.body.appendChild(popup);
+             
+            setTimeout(() => {
+                popup.style.opacity = "1";
+                popup.style.transform = "scale(1)";
+            }, 50);
+             
+            setTimeout(() => {
+                popup.style.opacity = "0";
+                popup.style.transform = "scale(0.8)";
+                setTimeout(() => popup.remove(), animationConfig.exitDuration);
+            }, 18000);
+        }
+ 
+        // 小黄鸭播放器核心功能
+        function initDuckPlayer() {
+            // 创建音频元素
+            const audio = document.createElement('audio');
+            audio.id = 'healingMusic';
+            audio.loop = true; // 循环播放
+            audio.volume = 0.4; // 默认音量100%
+            audio.preload = 'auto';
+ 
+            // 音频链接
+            const audioUrl = "https://uy.wzznft.com/i/2025/11/07/w0db52.mp3";
+            const source = document.createElement('source');
+            source.src = audioUrl;
+            source.type = 'audio/mpeg';
+            audio.appendChild(source);
+            document.body.appendChild(audio);
+ 
+            // 创建播放器容器（马卡龙蓝底色）
+            const playerContainer = document.createElement('div');
+            playerContainer.style.position = 'fixed';
+            playerContainer.style.bottom = '30px';
+            playerContainer.style.left = '50%';
+            playerContainer.style.transform = 'translateX(-50%)';
+            playerContainer.style.display = 'flex';
+            playerContainer.style.alignItems = 'center';
+            playerContainer.style.gap = '15px';
+            playerContainer.style.padding = '12px 25px';
+            playerContainer.style.backgroundColor = '#BBDEFB'; // 马卡龙蓝
+            playerContainer.style.borderRadius = '50px';
+            playerContainer.style.boxShadow = '0 4px 18px rgba(0,0,0,0.15)';
+            playerContainer.style.zIndex = '1001';
+            playerContainer.style.cursor = 'pointer';
+ 
+            // 小黄鸭图标（动态摇摆）
+            const duckIcon = document.createElement('div');
+            duckIcon.style.fontSize = '40px';
+            duckIcon.innerText = '🐥';
+            duckIcon.style.animation = 'duckSwing 2s infinite ease-in-out';
+            playerContainer.appendChild(duckIcon);
+ 
+            // 播放/暂停按钮（马卡龙粉）
+            const controlBtn = document.createElement('button');
+            controlBtn.innerText = '播放音乐';
+            controlBtn.style.border = 'none';
+            controlBtn.style.padding = '8px 20px';
+            controlBtn.style.borderRadius = '30px';
+            controlBtn.style.backgroundColor = '#FFCDD2'; // 马卡龙粉
+            controlBtn.style.color = '#333';
+            controlBtn.style.fontSize = '16px';
+            controlBtn.style.fontWeight = 'bold';
+            controlBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            controlBtn.style.cursor = 'pointer';
+            controlBtn.style.transition = 'all 0.3s ease';
+            playerContainer.appendChild(controlBtn);
+ 
+            // 音量调节滑块（马卡龙黄）
+            const volumeSlider = document.createElement('input');
+            volumeSlider.type = 'range';
+            volumeSlider.min = '0';
+            volumeSlider.max = '1';
+            volumeSlider.step = '0.1';
+            volumeSlider.value = '0.4';
+            volumeSlider.style.width = '80px';
+            volumeSlider.style.height = '6px';
+            volumeSlider.style.borderRadius = '3px';
+            volumeSlider.style.backgroundColor = '#FFECB3'; // 马卡龙黄
+            volumeSlider.style.outline = 'none';
+            volumeSlider.style.appearance = 'none';
+            // 滑块样式优化
+            volumeSlider.style.webkitAppearance = 'none';
+            volumeSlider.oninput = function() {
+                audio.volume = this.value;
+            };
+            playerContainer.appendChild(volumeSlider);
+ 
+            // 播放器交互逻辑
+            controlBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play().catch(e => {
+                        alert('✨ 请点击允许播放音乐，开启治愈时光～');
+                    });
+                    this.innerText = '暂停音乐';
+                    duckIcon.style.animation = 'duckSwing 1s infinite ease-in-out'; // 播放时加速摇摆
+                } else {
+                    audio.pause();
+                    this.innerText = '播放音乐';
+                    duckIcon.style.animation = 'duckSwing 2s infinite ease-in-out'; // 暂停时减速摇摆
+                }
+            });
+ 
+            // 点击播放器整体也能控制播放/暂停
+            playerContainer.addEventListener('click', function(e) {
+                if (e.target !== controlBtn && e.target !== volumeSlider) {
+                    controlBtn.click();
+                }
+            });
+ 
+            // 添加摇摆动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes duckSwing {
+                    0% { transform: rotate(-5deg); }
+                    50% { transform: rotate(5deg); }
+                    100% { transform: rotate(-5deg); }
+                }
+                button:hover {
+                    transform: scale(1.05);
+                    background-color: #F8BBD0 !important;
+                }
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #FF9EBB;
+                    cursor: pointer;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                }
+            `;
+            document.head.appendChild(style);
+ 
+            document.body.appendChild(playerContainer);
+        }
+ 
+        // 页面加载初始化
+        window.onload = function() {
+            // 初始化播放器
+            initDuckPlayer();
+             
+            // 初始化弹窗（调整为500条）
+            const totalPopups = 500;
+            const interval = 400;
+            for(let i = 0; i < totalPopups; i++) {
+                const offset = i * interval;
+                setTimeout(() => showMessage(0), offset);
+            }
+            setInterval(() => showMessage(100), interval * 2);
+        };
+    </script>
+</head>
+<body style="margin:0;background:#fff0f0;overflow:hidden;">
+</body>
+</html>
